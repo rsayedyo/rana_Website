@@ -1,0 +1,92 @@
+// Widescreens
+@include mediaXl {
+  //@include: is to use the mixin created in _mobile.scss
+  .projects {
+    grid-template-columns: repeat(
+      4,
+      1fr
+    ); //we want "My Work" to have four coloums when the screen is XL
+  }
+}
+// Desktops & Laptops
+@include mediaLg {
+  .projects {
+    grid-template-columns: repeat(
+      3,
+      1fr
+    ); // we want "My Work" to have  3 coloums when the screen is XL
+  }
+}
+// Tablets & Small Laptops
+@include mediaMd {
+  // we want everthing to align in the centgiter for smaller screens
+  main {
+    align-items: center;
+    text-align: center;
+    .lg-heading {
+      // to get rid of the space between the first and last name when they shrink to be on top of one another
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+  }
+  ul.menu-nav,
+  div.menu-branding {
+    float: none; // prevent them from being side by side, otherwise they will get squished
+    width: 100%; // we want them both to span the screen horozontially instead, on top of each others.
+    min-height: 0;
+    &.show {
+      transform: translate3d(
+        0,
+        0,
+        0
+      ); // instead of coming in from top and bottom, we want them to come from left and right.
+    }
+  }
+  // When is doesnt show the navbar content:
+  .menu-nav {
+    height: 75vh;
+    // Since they're horizontal now, the menu nav takes 75VH and the menu-branding takes the rest
+    transform: translate3d(-100%, 0, 0);
+    // cuz we're coming from the left and right, we have to use the first parameter..if it was top and bottom use the second parameter
+    font-size: 24px;
+  }
+  .menu-branding {
+    height: 25vh; // the remaning of the 100vh...duh-,-
+    transform: translate3d(100%, 0, 0); // coming from the other side:right
+    .portrait {
+      // the image is too big.. so we must make it smaller
+      background: url("../img/portrait.jpg");
+      width: 150px;
+      height: 150px;
+    }
+  }
+  .about-info {
+    grid-template-areas: //we wanna change the visial representaion of the grids when the screen is smaller
+      "bioimage"
+      "bio"
+      "job1"
+      "job2"
+      "job3";
+    grid-template-columns: 1fr; // make it only one coloum where everything is laid on top of each other.
+  }
+  .projects {
+    grid-template-columns: repeat(2, 1fr);
+    // we want "My Work" to have 2 coloums when the screen is XL
+  }
+}
+// Smartphones
+@include mediaSm {
+  main {
+    // padding: 2rem;
+    #home h1 {
+      margin-top: 10vh; // if the screen vertically short we always want 10vh before the headings
+    }
+    .lg-heading {
+      margin-top: 1rem;
+      font-size: 5rem;
+    }
+  }
+  .projects {
+    grid-template-columns: 1fr; // we want "My Work" to have 1 coloums when the screen is XL
+  }
+}

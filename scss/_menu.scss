@@ -1,0 +1,135 @@
+//Menu button
+.menu-btn {
+  position: absolute;
+  z-index: 3;
+  right: 35px;
+  top: 35px;
+  cursor: pointer;
+  @include easeOut;
+
+  .btn-line {
+    width: 28px;
+    height: 3px;
+    margin: 0 0 5px 0; //top right bottom left
+    background: #ffffff;
+    @include easeOut;
+  }
+
+  //Rotate into "X" icon with menu lines:
+  &.close {
+    transform: rotate(180deg);
+    .btn-line {
+      //line 1 - Rotate
+      &:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+      //line 2 - Hide
+      &:nth-child(2) {
+        opacity: 0;
+      }
+
+      //line 3 - Rotate
+      &:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px); //those numbers were config by missing around and seeing which ones makes an X
+      }
+    }
+  }
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  opacity: 0.9;
+  visibility: hidden;
+
+  &.show {
+    visibility: visible;
+  }
+  &-branding,
+  &-nav {
+    ///same as .menu-branding
+    display: flex; //will make it into colums going vertically instead of horizontally
+    flex-flow: column wrap;
+    align-items: center; //will centre it in the middle
+    justify-content: center;
+    float: left;
+    width: 50%;
+    height: 100vh;
+    overflow: hidden; //get rid of the scroll bar
+  }
+  //menu only side
+  &-nav {
+    margin: 0;
+    padding: 0%;
+    background: darken($primary-color, 5);
+    list-style: none;
+    transform: translate3d(0, -100%, 0); //to make it slide from the top
+    @include easeOut;
+
+    &.show {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  //branding only side:
+  &-branding {
+    background: $primary-color; //cuz of the opacity in the menu class you will still be able to see through it
+    transform: translate3d(0, 100%, 0); //to make it slide from the top
+    @include easeOut;
+
+    &.show {
+      //Slide in from bottom
+      transform: translate3d(0, 0, 0);
+    }
+
+    .portrait {
+      width: 250px;
+      height: 250px;
+      background: url(../img/portrait.jpg);
+      border-radius: 50%; //will make it into a circle
+      border: solid 3px $secondary-color;
+    }
+  }
+
+  .nav-item {
+    transform: translate3d(
+      600px,
+      0,
+      0
+    ); //off the screen untill we get the show class
+    @include easeOut;
+    &.show {
+      // when the show class is open // Slide in from right
+      transform: translate3d(0, 0, 0);
+    }
+    &.current > a {
+      // ( > a) means that we want the link, so once we're inside the link, this what we want to color.
+      color: $secondary-color;
+    }
+  }
+  .nav-link {
+    // styling the four links of the nav bars, adding space between them etc...
+    display: inline-block;
+    position: relative;
+    font-size: 30px;
+    text-transform: uppercase;
+    padding: 1rem 0; // 1 rem on top and bottom and then zero on the left and right.
+    font-weight: 300;
+    color: set-text-color($primary-color);
+    text-decoration: none;
+    @include easeOut; // adding the transation
+    &:hover {
+      // when we hover over them their color should change to the secondary color.
+      color: $secondary-color;
+    }
+  }
+}
+// Delay each nav item slide by 0.1s:
+@for $x from 1 through 4 {
+  // same as (for i=0 <=4, i++)
+  .nav-item:nth-child(#{$x}) {
+    transition-delay: $x *
+      0.1s; // cuz we want them one after the other so we want x to be multiplied by 0.1s, otherwise they will all be delay 0.1s and show up at the same time. that why wee need the loop
+  }
+}

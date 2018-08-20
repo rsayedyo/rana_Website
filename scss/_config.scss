@@ -1,0 +1,103 @@
+$primary-color: #141d3b;
+$secondary-color: #8fbaff;
+$show-home-image: true;
+$home-image: url(../img/background.png);
+$background-opacity: 0.9;
+
+@mixin easeOut {
+  transition: all 0.5s ease-out;
+}
+
+@mixin background {
+  @if $show-home-image {
+    &#bg-img {
+      background: $home-image;
+      background-attachment: fixed;
+      background-size: cover;
+
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        // background: rgba($primary-color, $background-opacity);
+      }
+    }
+
+    &#bg-about {
+      background: $home-image;
+      background-attachment: fixed;
+      background-size: cover;
+
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 103%;
+        z-index: -1;
+        background: rgba($primary-color, $background-opacity);
+      }
+    }
+
+    &#bg-work,
+    &#bg-contact {
+      background: $home-image;
+      background-attachment: fixed;
+      background-size: cover;
+
+      &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: rgba($primary-color, $background-opacity);
+      }
+    }
+  }
+}
+
+//Set text Colour; if the primary color of the backgorund is light the text wont be read cuz it's white so we wanna write a function
+//and it has to be a function not a mixin since we must return a 'color' and whenever we're returning anything we have to use a function for that
+@function set-text-color($color) {
+  //$color is the initial color variable that we're passing in; so it would be the primary color in our case
+  @if (lightness($color) > 40) {
+    //We wanna test the lightness of the background color, bigger than 40 then change the text color to black, otherwise keep it white.
+    @return #000;
+  } @else {
+    @return #fff;
+  }
+}
+
+// Media Query Mixins
+@mixin mediaSm {
+  @media screen and (max-width: 500px) {
+    //what this means :that any CSS we put inside {@content} will only apply if the screen is 500PX or less.
+    @content; //we will not put the css in here, because the point of a mixin is to be able to use it anywhere
+  }
+}
+
+@mixin mediaMd {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mediaLg {
+  @media screen and (min-width: 769px) and (max-width: 1170px) {
+    @content;
+  }
+}
+
+@mixin mediaXl {
+  @media screen and (min-width: 1171px) {
+    @content;
+  }
+}

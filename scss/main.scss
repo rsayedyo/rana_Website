@@ -1,0 +1,241 @@
+// We need a way for our sass to get compiled down to regular CSS because the browser doesnt read scss files..for that we are using "Node-sass":(https://github.com/sass/node-sass)
+// Before we install node-sass, we need to create "package.jason file"which is a manifest for our project.
+// -to do that: through npm init
+// - open your integrated terminal in VS
+// - write the following:
+// npm init
+// -Will ask a few questions about the project, write the name, description
+// -It will then create a new jason file, has all npm,hold key vlue pairs and some information,  if we ever installed anything with npm it will be put there.
+// -now we can go ahead and install node-sass:
+// -Write the following in the terminal :window:
+// npm i node-sass
+// -it will create a modules folder, anytime you install something with npm gets put in the modules folders.
+//  -dont worry about those folders, you wont need to touch it.
+
+$primary-color: #08102a;
+$secondary-color: #8fbaff;
+$show-home-image: true;
+$home-image: url(../img/background.png);
+$background-opacity: 0.9;
+
+//creating a function to transiton everything since we'll be using transition a lot.
+@mixin easeOut {
+  //Transitions in css: taking time in doing stuff
+  transition: all 1s ease-out; //parameters: A-what your want to trasition: (all) includes everything that is transitionable. B-the time it takes. C-the motion of the transition or the style>>like closing the apps in your iphone.
+}
+
+@mixin background {
+  @if $show-home-image {
+    &#bg-img {
+      background: $home-image;
+      background-attachment: fixed;
+      background-size: cover;
+
+      //since the text is barely readable, we need to create an overlay
+      &:after {
+        content: ""; //whenever you use before and after you have to use content
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; //to force the text to be pusheh on top on the overlay, and the background picture is behind it.
+        //background: rgba($primary-color, $background-opacity);
+      }
+    }
+  }
+}
+
+@import "config";
+@import "menu";
+
+// Creating a box sizing property for everything: to select everything is css use: *
+* {
+  box-sizing: border-box;
+}
+
+body {
+  @include background;
+  background: $home-image;
+  background-attachment: fixed;
+  background-size: cover;
+  color: set-text-color($primary-color);
+  //using the text color change function in config.scss by passing the primary color of the background
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+}
+
+//Headings:
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 400;
+
+  &.lg-heading {
+    font-size: 6rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+  &.sm-heading {
+    margin-bottom: 2rem;
+    padding: 0.3rem 1rem;
+    //lighten is a sass tool takes two parameters, the background colour and how much we wanna lighten it up by
+    //however if we have a background image, we need to be able to see through it: to do so wh wrap it in rgba(lighten, Opacity value) function
+    background: rgba(lighten($primary-color, 2), 0.5);
+  }
+}
+//Links:
+a {
+  color: #fff;
+  text-decoration: none;
+}
+//Header
+header {
+  position: fixed; //to prevent the header from moving, i.g the menu list icon stays at the top when you scroll down.
+  z-index: 2; //how close an element to you
+  width: 100%;
+}
+
+//Text:
+.text-secondary {
+  color: #8fbaff;
+}
+
+//Main items:
+main {
+  padding: 4rem;
+  //height: 100%; >>  this makes the footer moves up to whereever the content of the main ends. We dont want that, we want the footer to stick to the bottom
+  min-height: 100%;
+  //We will use the calc function of css to calculate how much is the main content is taking from the page, so we can stick the footer to whatever is left at the bottom
+
+  //nesting the main tag
+  .icons {
+    margin-top: 1rem;
+    //cuz every icon is wrapped in a link, <a> tag, nest it inside .icons
+    a {
+      padding: 0.4rem;
+      &:hover {
+        //same as saying a:hover in regular css
+        color: $secondary-color;
+        @include easeOut(
+
+        ); //instead of repeating the same code everytime we want to transition something, we can just @include the function easeOut.
+      }
+    }
+  }
+  &#home {
+    overflow: hidden; // remove an scroll bars.
+    h1 {
+      margin-top: 20vh; // vh is a unit, viewport height, think of it as a horizontal slices so 20VH will take 20 slices down. there's a total of 100 VH. // there's also vw which u can think of as slices vertical.
+    }
+  }
+}
+// About page css: we're using grid templates here to align everyhting.Basically we can map out different areas and where we want them displayed.
+.about-info {
+  display: grid;
+  grid-gap: 30px;
+  // create a space between the colums of each grid
+  grid-template-areas: //more like a visual representation of how you want your grids to be displayed
+    "bioimage bio bio"
+    "job1 job2 job3";
+  grid-template-columns: repeat(3, 1fr);
+  // we want 4 1rf: same as saying 1fr 1fr 1fr. but repeat function is easier
+  .bio-image {
+    grid-area: bioimage; // now we're defining each grid by its name that we gave it in ' grid-template-areas:'
+    margin: auto;
+    border: 50%;
+    // border-radius: >to make it rounded
+    border: $secondary-color 3px solid; // give you a vorder around the img with the secondary color
+  }
+  .bio {
+    grid-area: bio;
+    font-size: 1.5rem;
+  }
+  .job-1 {
+    grid-area: job1;
+  }
+  .job-2 {
+    grid-area: job2;
+  }
+  .job-3 {
+    grid-area: job3;
+  }
+  .job {
+    // we want to put them in boxes, like adding a background color, and since they all have the job class we can do that to all three of them.
+    background: lighten($primary-color, 5);
+    padding: 0.5rem; // adding a bit of padding otherwise it will be all the way against the edges.
+    border-bottom: $secondary-color 5px solid;
+    // a yellow line at the end of the "box" or technically the grid.
+  }
+}
+// Work/Projects
+.projects {
+  display: grid;
+  grid-gap: 0.7rem;
+  grid-template-columns: repeat(3, 1fr);
+  img {
+    width: 100%; // shirnks the images to only span the 100% width of the grid
+    border: 3px #fff solid;
+    &:hover {
+      opacity: 0.5; // /border-color: $secondary-color;
+      @include easeOut;
+    }
+  }
+}
+.modal-content {
+  margin: 50% auto;
+  background: $secondary-color;
+  // color: set-text-color($secondary-color);
+}
+// Contact Page
+.boxes {
+  display: flex;
+  flex-wrap: wrap;
+  // this causes it to wrap next to each other when the screen gets bigger
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 1rem;
+  div {
+    font-size: 2rem;
+    border: 3px #fff solid;
+    padding: 1.5rem 2.5rem;
+    margin-bottom: 3rem;
+    @include easeOut;
+    &:hover {
+      padding: 0.5rem 1.5rem;
+      background: $secondary-color;
+      color: set-text-color($secondary-color);
+      span {
+        color: $secondary-color;
+      }
+    }
+  }
+}
+// Button Styles
+.btn {
+  display: block;
+  // inline-block wil display them next to each others.
+  padding: 0.5rem 1rem; // 0.5 from the top and bottom and 1 rem from left and right
+  border: 0;
+  margin-bottom: 0.3rem;
+  &:hover {
+    background: $secondary-color;
+    color: set-text-color($secondary-color);
+  }
+}
+.btn-dark {
+  @extend .btn; // WE're extending the class 'btn' it's more like inherting a class
+  background: darken($primary-color, 50);
+  color: #fff;
+}
+.btn-light {
+  @extend .btn;
+  background: lighten($primary-color, 50);
+  color: $primary-color;
+  padding: 10px 20px;
+}
+@import "mobile";
+// we want to run the mobile css after we run the initial css that's why we place the import at the bottom and not at the top.
